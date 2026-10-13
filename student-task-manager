@@ -1,0 +1,489 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Task & Deadline Manager</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f3f0ff;
+    color: #292344;
+    padding: 25px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.header {
+    background: linear-gradient(135deg, #6c4ce3, #4299e1);
+    color: white;
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 20px #6c4ce333;
+}
+
+.header h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.header p {
+    opacity: 0.9;
+    line-height: 1.5;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px #2923440d;
+}
+
+.stat-card h3 {
+    color: #77718c;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.stat-card p {
+    font-size: 30px;
+    font-weight: bold;
+    color: #6c4ce3;
+}
+
+.panel {
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px #2923440d;
+}
+
+.panel h2 {
+    margin-bottom: 20px;
+    font-size: 21px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.field label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.field input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ded9ef;
+    border-radius: 9px;
+    font-size: 14px;
+    outline-color: #6c4ce3;
+}
+
+button {
+    border: none;
+    border-radius: 9px;
+    padding: 11px 15px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+button:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+.add-btn {
+    background: #6c4ce3;
+    color: white;
+    margin-top: 18px;
+    width: 100%;
+    padding: 14px;
+    font-size: 15px;
+}
+
+.task-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.task {
+    border: 1px solid #e8e3f5;
+    border-left: 5px solid #6c4ce3;
+    padding: 17px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
+}
+
+.task.done {
+    border-left-color: #20a779;
+    background: #f1fcf7;
+}
+
+.task.done .task-title {
+    text-decoration: line-through;
+    color: #858199;
+}
+
+.task-title {
+    font-size: 16px;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+.task-info {
+    color: #77718c;
+    font-size: 13px;
+    margin-top: 7px;
+    line-height: 1.5;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.pending {
+    background: #fff0d4;
+    color: #a46600;
+}
+
+.completed {
+    background: #d9f8e9;
+    color: #16845b;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.complete-btn {
+    background: #d9f8e9;
+    color: #16845b;
+}
+
+.delete-btn {
+    background: #ffe3e6;
+    color: #d9364f;
+}
+
+.filter {
+    padding: 9px;
+    border: 1px solid #ded9ef;
+    border-radius: 8px;
+    background: white;
+}
+
+.empty {
+    text-align: center;
+    color: #8b849f;
+    padding: 30px 10px;
+}
+
+.footer {
+    text-align: center;
+    color: #8b849f;
+    font-size: 13px;
+    padding: 10px;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 12px;
+    }
+
+    .header {
+        padding: 22px;
+    }
+
+    .header h1 {
+        font-size: 23px;
+    }
+
+    .stats {
+        gap: 8px;
+    }
+
+    .stat-card {
+        padding: 13px;
+    }
+
+    .stat-card h3 {
+        font-size: 11px;
+    }
+
+    .stat-card p {
+        font-size: 24px;
+    }
+
+    .panel {
+        padding: 17px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .task {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+    <header class="header">
+        <h1>📚 Student Task Manager</h1>
+        <p>Organize your schoolwork. Manage your deadlines. Achieve your goals!</p>
+    </header>
+
+    <section class="stats">
+        <div class="stat-card">
+            <h3>📋 Total Tasks</h3>
+            <p id="total">0</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>⏳ Pending</h3>
+            <p id="pendingCount">0</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>✅ Completed</h3>
+            <p id="completedCount">0</p>
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>➕ Add a New Task</h2>
+
+        <form id="taskForm">
+            <div class="form-grid">
+                <div class="field">
+                    <label for="title">Task Title</label>
+                    <input id="title" type="text"
+                           placeholder="e.g. Finish OOP project" required>
+                </div>
+
+                <div class="field">
+                    <label for="subject">Subject</label>
+                    <input id="subject" type="text"
+                           placeholder="e.g. Programming" required>
+                </div>
+
+                <div class="field">
+                    <label for="deadline">Deadline</label>
+                    <input id="deadline" type="date" required>
+                </div>
+            </div>
+
+            <button class="add-btn" type="submit">+ Add Task</button>
+        </form>
+    </section>
+
+    <section class="panel">
+        <div class="task-top">
+            <h2>📝 My Tasks</h2>
+
+            <select id="filter" class="filter" aria-label="Filter tasks">
+                <option value="all">All Tasks</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+            </select>
+        </div>
+
+        <div id="taskList" class="task-list"></div>
+    </section>
+
+    <footer class="footer">
+        Student Task & Deadline Manager · Stay organized, stay productive!
+    </footer>
+
+</div>
+
+<script>
+let tasks = [];
+
+try {
+    tasks = JSON.parse(
+        localStorage.getItem("studentTasks") || "[]"
+    );
+
+    if (!Array.isArray(tasks)) tasks = [];
+} catch (error) {
+    tasks = [];
+}
+
+const form = document.getElementById("taskForm");
+const taskList = document.getElementById("taskList");
+const filter = document.getElementById("filter");
+
+function saveTasks() {
+    localStorage.setItem("studentTasks", JSON.stringify(tasks));
+}
+
+function updateStats() {
+    document.getElementById("total").textContent = tasks.length;
+
+    document.getElementById("pendingCount").textContent =
+        tasks.filter(task => !task.completed).length;
+
+    document.getElementById("completedCount").textContent =
+        tasks.filter(task => task.completed).length;
+}
+
+function renderTasks() {
+    taskList.replaceChildren();
+
+    const selected = filter.value;
+
+    const visibleTasks = tasks.filter(task => {
+        if (selected === "pending") return !task.completed;
+        if (selected === "completed") return task.completed;
+        return true;
+    });
+
+    if (visibleTasks.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = tasks.length === 0
+            ? "No tasks yet. Add your first task above! ✨"
+            : "No tasks match this filter.";
+        taskList.appendChild(empty);
+    }
+
+    visibleTasks.forEach(task => {
+        const card = document.createElement("div");
+        card.className = "task" + (task.completed ? " done" : "");
+
+        const details = document.createElement("div");
+        details.style.minWidth = "0";
+
+        const title = document.createElement("div");
+        title.className = "task-title";
+        title.textContent = task.title;
+
+        const info = document.createElement("div");
+        info.className = "task-info";
+        info.textContent = task.subject + " · Deadline: " + task.deadline;
+
+        const badge = document.createElement("span");
+        badge.className = "badge " +
+            (task.completed ? "completed" : "pending");
+        badge.textContent = task.completed ? "Completed" : "Pending";
+
+        details.append(title, info, badge);
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        const completeButton = document.createElement("button");
+        completeButton.className = "complete-btn";
+        completeButton.textContent = task.completed ? "Undo" : "✓ Done";
+        completeButton.addEventListener("click", () => {
+            task.completed = !task.completed;
+            saveTasks();
+            renderTasks();
+        });
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "delete-btn";
+        deleteButton.textContent = "Delete";
+        deleteButton.addEventListener("click", () => {
+            tasks = tasks.filter(item => item.id !== task.id);
+            saveTasks();
+            renderTasks();
+        });
+
+        actions.append(completeButton, deleteButton);
+        card.append(details, actions);
+        taskList.appendChild(card);
+    });
+
+    updateStats();
+}
+
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const title = document.getElementById("title").value.trim();
+    const subject = document.getElementById("subject").value.trim();
+    const deadline = document.getElementById("deadline").value;
+
+    if (!title || !subject || !deadline) {
+        alert("Please complete all fields.");
+        return;
+    }
+
+    tasks.push({
+        id: Date.now() + Math.random(),
+        title: title,
+        subject: subject,
+        deadline: deadline,
+        completed: false
+    });
+
+    saveTasks();
+    form.reset();
+    renderTasks();
+});
+
+filter.addEventListener("change", renderTasks);
+
+renderTasks();
+</script>
+</body>
+</html>
+
+        
